@@ -55,3 +55,34 @@ for t in range(1, 11):
     while counts[right] == 0:
         right -= 1
     print(f'#{t} {right - left}')
+
+# Solution 3
+for t in range(1, 11):
+    N = int(input())
+    counts = [0] * 101
+
+    for i in map(int, input().split()):
+        counts[i] += 1
+
+    left, right = 1, 100
+    while left < right:
+        while counts[left] == 0:
+            left += 1
+        while counts[right] == 0:
+            right -= 1
+
+        minimum = counts[left] if counts[left] < counts[right] else counts[right]
+        counts[left] -= minimum
+        counts[right] -= minimum
+        counts[left + 1] += minimum
+        counts[right - 1] += minimum
+
+        N -= minimum
+        if N <= 0:
+            if N == 0:
+                while counts[left] == 0:
+                    left += 1
+                while counts[right] == 0:
+                    right -= 1
+            break
+    print(f'#{t} {right - left}')
