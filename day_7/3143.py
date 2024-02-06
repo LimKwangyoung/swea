@@ -6,5 +6,6 @@ T = int(input())
 
 for t in range(1, T + 1):
     A, B = input().split()
-    num = A.count(B)
-    print(f'#{t} {num + len(A) - len(B) * num}')
+    lst = A.split(B)
+
+    print(f'#{t} {len(lst) - 1 + len("".join(lst))}')

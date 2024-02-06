@@ -42,4 +42,5 @@ for _ in range(1, 11):
     t = int(input())
     pattern = input()
     text = input()
-    print(f'#{t} {text.count(pattern)}')
+
+    print(f'#{t} {len(text.split(pattern))- 1}')
