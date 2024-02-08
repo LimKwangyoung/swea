@@ -7,8 +7,7 @@ T = int(input())
 for t in range(1, T + 1):
     cuts = input()
 
-    result = 0
-    idx = 0
+    result = idx = 0
     stack = []
     while idx < len(cuts):
         if cuts[idx] == '(':
@@ -16,8 +15,7 @@ for t in range(1, T + 1):
                 result += len(stack)
                 idx += 2
                 continue
-            else:
-                stack.append(cuts[idx])
+            stack.append(cuts[idx])
         else:
             stack.pop()
             result += 1
