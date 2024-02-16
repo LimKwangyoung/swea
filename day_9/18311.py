@@ -20,7 +20,7 @@ while stack:
         result.append(str(vertex))
 
         for i in range(V, -1, -1):
-            if graph[vertex][i] and not visited[i]:
+            if graph[vertex][i]:
                 stack.append(i)
 
 print(f'#1 {"-".join(result)}')
