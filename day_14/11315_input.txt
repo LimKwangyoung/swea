@@ -6,4 +6,4 @@
 .oooo.o
 .oooo.o
 .oooo.o
-...oo.o
+...oo..
