@@ -23,9 +23,6 @@ def bfs() -> int:
                 board[row][col][1] -= 1
                 if board[row][col][1] >= 1:
                     new_queue.append((row, col))
-                # new_queue.append((row, col))
-                # if board[row][col][2] <= cnt:
-                #     continue
                 # breeding
                 coord = ((row - 1, col), (row, col + 1), (row + 1, col), (row, col - 1))
                 for r, c in coord:
