@@ -48,14 +48,20 @@ def search(cnt: int) -> None:
         result.append(total)
         return
 
+    flag = False
     for i in range(W):
         ans = is_shoot(i)
-        if ans[0]:
-            sub = copy.deepcopy(bricks)
+        if ans[0] is not None:
+            # sub = copy.deepcopy(bricks)
+            sub = [ma.copy() for ma in bricks]
             bomb(ans[0], ans[1], bricks[ans[0]][ans[1]])
+            # print(bricks)
             gravity()
             search(cnt + 1)
             bricks = sub
+            flag = True
+    if not flag:
+        search(N)
 
 
 T = int(input())
@@ -66,4 +72,5 @@ for t in range(1, T + 1):
 
     result = []
     search(0)
-    print(f'#{t} {min(result) if result else 0}')
+    # print(result)
+    print(f'#{t} {min(result)}')
