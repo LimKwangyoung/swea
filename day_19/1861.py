@@ -12,6 +12,7 @@ def dfs(row: int, col: int) -> int:
         coord = ((row - 1, col), (row, col - 1), (row, col + 1), (row + 1, col))
         for r, c in coord:
             if 0 <= r < N and 0 <= c < N and board[row][col] + 1 == board[r][c]:
+                visited[r][c] = True
                 stack.append((r, c))
                 result += 1
     return result
