@@ -19,6 +19,10 @@ def search(start: list, direction: int) -> int:
 
     pos = start[:]
     move()
+
+    if 0 <= pos[0] < N and 0 <= pos[1] < N and board[pos[0]][pos[1]] <= 0:
+        return 0
+
     while 0 <= pos[0] < N and 0 <= pos[1] < N:
         value = board[pos[0]][pos[1]]
 

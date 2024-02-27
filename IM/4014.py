@@ -10,12 +10,14 @@ def runway(fix: int) -> int:
         prev_height, prev_cnt = arr[prev]
         for cur in range(1, len(arr)):
             cur_height, cur_cnt = arr[cur]
+            if abs(prev_height - cur_height) >= 2:
+                return 0
             if prev_height < cur_height:
                 if prev_cnt < X:
                     return 0
                 else:
                     arr[prev][1] -= X
-            if prev_height > cur_height:
+            else:
                 if cur_cnt < X:
                     return 0
                 else:
