@@ -4,43 +4,26 @@ sys.stdin = open(f'{__file__.split("/")[-1][:-3]}_input.txt')
 ##################################################
 
 
-def decoding(row: int, col: int):
-    def check(string: str, n: int):
-        ratio = ''
-        p = 0
-        while p < len(string) - 1:
-            cnt = 1
-            while p < len(string) - 1 and string[p] == string[p + 1]:
-                p += 1
-                cnt += 1
+def check(string: str, n: int):
+    ratio = ''
+    p = 0
+    while p < len(string) - 1:
+        cnt = 1
+        while p < len(string) - 1 and string[p] == string[p + 1]:
             p += 1
-            ratio += str(cnt // n)
-        if len(ratio) == 3:
-            ratio += '1'
-        if ratio in pattern:
-            return pattern[ratio]
-        else:
-            return False
+            cnt += 1
+        p += 1
+        ratio += str(cnt // n)
+    if len(ratio) == 3:
+        ratio += '1'
 
-    length = 1
-    while 56 * length <= col:
-        idx = col
-        result = []
-        for _ in range(8):
-            code = board[row][idx - 7 * length + 1:idx + 1]
-            ans = check(code, length)
-            if ans:
-                result.append(ans)
-                idx -= 7 * length
-            else:
-                length += 1
-                break
-        else:
-            return result[::-1]
-    return False
+    if ratio in pattern:
+        return pattern[ratio]
+    else:
+        return False
 
 
-def is_valid(arr: list) -> int:
+def is_valid(arr: str) -> int:
     odd = 0
     for idx in range(0, 8, 2):
         odd += int(arr[idx])
@@ -59,31 +42,45 @@ T = int(input())
 
 for t in range(1, T + 1):
     N, M = map(int, input().split())
-    board = []
+
+    line_check = set()
+    code_lines = []
     for _ in range(N):
-        line = list(input())
-        for i in range(M):
-            if line[i] != '0':
-                line[i] = str(bin(int(line[i], 16)))[2:].zfill(4)
-        board.append(''.join(line))
+        line = input().strip().rstrip('0')
+        if line == '' or line in line_check:
+            continue
 
-    decode = 0
-    for i in range(N):
-        if decode:
-            break
-        j = len(board[i]) - 1
-        while j >= 0:
-            if board[i][j] != '0':
-                decode = decoding(i, j)
-                if decode:
-                    decode = is_valid(decode)
-                    if decode:
-                        print(f'#{t} {decode}')
-                        break
-            j -= 1
-    else:
-        print(f'#{t} 0')
+        line_check.add(line)
+        line = list(line)
+        for i, char in enumerate(line):
+            line[i] = str(bin(int(char, 16)))[2:].zfill(4)
+        line = ''.join(line).rstrip('0')
+        code_lines.append(line)
 
+    result = 0
+    code_check = set()
+    for line in code_lines:
+        col = len(line)
+        length = 1
+        while col >= 55:
+            i = col
 
-    # for i in board:
-    #     print(i)
+            decode_lst = []
+            for _ in range(8):
+                code = line[i - 7 * length:i]
+                ans = check(code, length)
+                if ans:
+                    decode_lst.append(ans)
+                    i -= 7 * length
+                else:
+                    length += 1
+                    break
+            else:
+                decode = ''.join(decode_lst[::-1])
+                if decode not in code_check:
+                    code_check.add(decode)
+                    result += is_valid(decode)
+                line = line[:i].rstrip('0')
+                col = len(line)
+                length = 1
+    print(f'#{t} {result}')
