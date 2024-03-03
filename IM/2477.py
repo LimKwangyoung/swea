@@ -4,6 +4,7 @@ sys.stdin = open('input.txt')
 ##################################################
 import collections
 
+# Solution 1
 T = int(input())
 
 for t in range(1, T + 1):
@@ -67,4 +68,68 @@ for t in range(1, T + 1):
                 if i + 1 == B and counter_2[i][1] in client_set:  # target counter in repair
                     result += counter_2[i][1]
         time += 1
+    print(f'#{t} {result if result else -1}')
+
+# Solution 2
+T = int(input())
+
+for t in range(1, T + 1):
+    N, M, K, A, B = map(int, input().split())
+    reception = list(map(int, input().split()))
+    repair = list(map(int, input().split()))
+    clients = list(map(int, input().split()))
+
+    target = set()
+
+    # reception
+    waiting = []  # (client id, end time, counter id)
+    counters = [0] * N  # end time about reception counter
+    for client_id, client in enumerate(clients):
+        minimum = float('inf')
+        min_idx = -1
+        for idx, counter in enumerate(counters):
+            if counter <= client:
+                counters[idx] = client + reception[idx]
+                waiting.append((client_id + 1, counters[idx], idx + 1))
+
+                # check target
+                if idx + 1 == A:
+                    target.add(client_id + 1)
+                break
+            if counter < minimum:
+                minimum = counter
+                min_idx = idx
+        else:
+            counters[min_idx] += reception[min_idx]
+            waiting.append((client_id + 1, counters[min_idx], min_idx + 1))
+
+            # check target
+            if min_idx + 1 == A:
+                target.add(client_id + 1)
+
+    waiting.sort(key=lambda x: (x[1], x[2]))
+
+    # repair
+    result = 0
+    counters = [0] * M  # end time about repair counter
+    for client_id, client, _ in waiting:
+        minimum = float('inf')
+        min_idx = -1
+        for idx, counter in enumerate(counters):
+            if counter <= client:
+                counters[idx] = client + repair[idx]
+
+                # check target
+                if idx + 1 == B and client_id in target:
+                    result += client_id
+                break
+            if counter < minimum:
+                minimum = counter
+                min_idx = idx
+        else:
+            counters[min_idx] += repair[min_idx]
+
+            # target
+            if min_idx + 1 == B and client_id in target:
+                result += client_id
     print(f'#{t} {result if result else -1}')

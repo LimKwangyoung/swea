@@ -6,32 +6,22 @@ sys.stdin = open('input.txt')
 
 def line_up(person_arr: list, stair_info: tuple) -> int:
     def cal_distance() -> int:
-        return abs(person[0] - stair[0]) + abs(person[1] - stair[1])
+        return abs(person[0] - stair[0]) + abs(person[1] - stair[1]) + depth + 1
 
     stair = stair_info[:2]
-    depth = stair[-1]
+    depth = stair_info[-1]
 
     candidates = []
     for person in person_arr:
         candidates.append(cal_distance())
-    candidates.sort(reverse=True)
+    candidates.sort()
 
-    time = 0
-    stair = [None] * 3
-    while True:
-        if not candidates and stair.count(None) == 3:
-            return time
-
-        for idx in range(3):
-            if stair[idx]:
-                stair[idx] += 1
-                if stair[idx] == depth:
-                    if candidates[-1] <= time:
-                        stair[idx] = 0
-                        candidates.pop()
-                    else:
-                        stair[idx] = None
-        time += 1
+    stair = candidates[:3]
+    stair_idx = 0
+    for candidate in candidates[3:]:
+        stair[stair_idx] = max(stair[stair_idx] + depth, candidate)
+        stair_idx = (stair_idx + 1) % 3
+    return max(stair) if stair else 0
 
 
 T = int(input())
@@ -58,7 +48,7 @@ for t in range(1, T + 1):
                 tmp.append(persons[j])
         total_lst.append(tmp)
 
-    result = 0
+    result = float('inf')
     for lst_1 in total_lst:
         lst_2 = list(set(persons) - set(lst_1))
         result = min(result, max(line_up(lst_1, stairs[0]), line_up(lst_2, stairs[1])))
