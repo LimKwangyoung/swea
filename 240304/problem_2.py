@@ -5,14 +5,10 @@ T = int(input())
 for t in range(1, T + 1):
     N = int(input())
     houses = [list(map(int, input().split())) for _ in range(N)]
-    min_row = min(houses, key=lambda x: x[0])[0]
-    max_row = max(houses, key=lambda x: x[0])[0]
-    min_col = min(houses, key=lambda x: x[1])[1]
-    max_col = max(houses, key=lambda x: x[1])[1]
 
     distances = []
-    for row in range(min_row, max_row + 1):
-        for col in range(min_col, max_col + 1):
+    for row in range(-15, 16):
+        for col in range(-15, 16):
             tmp = []  # 충전소 위치
             for idx, house in enumerate(houses):
                 if row == house[0] and col == house[1]:
