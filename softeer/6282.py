@@ -15,7 +15,7 @@ for i in range(N):
                 row, col = que.popleft()
                 coord = [(row - 1, col), (row, col - 1), (row, col + 1), (row + 1, col)]
                 for r, c in coord:
-                    if 0<= r < N and 0 <= c < N and board[r][c] == '1':
+                    if 0 <= r < N and 0 <= c < N and board[r][c] == '1':
                         que.append((r, c))
                         board[r][c] = '0'
                         cnt += 1
