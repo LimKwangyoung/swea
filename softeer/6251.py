@@ -20,7 +20,7 @@ for time in range(1, R + 1):
             trees[i // 2][0].append(trees[i][(time + 1) % 2].popleft())
         if trees[i + 1][(time + 1) % 2]:
             trees[i // 2][1].append(trees[i + 1][(time + 1) % 2].popleft())
-            # leaf node
+    # leaf node
     for i in range(2 ** H, 2 ** (H + 1), 2):
         if trees[i]:
             trees[i // 2][0].append(trees[i].popleft())
