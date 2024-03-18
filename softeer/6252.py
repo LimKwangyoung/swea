@@ -22,4 +22,4 @@ powers = collections.defaultdict(int)
 for i in map(int, sys.stdin.readline().split()):
     powers[i] += 1
 
-print(binary_search(1, 2 * 10 ** 9))
+print(binary_search(1, max(powers) + int(B ** (1 / 2))))
