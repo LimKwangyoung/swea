@@ -1,3 +1,9 @@
+import sys
+
+sys.stdin = open(f'{__file__.split("/")[-1][:-3]}_input.txt')
+##################################################
+
+
 def dfs(total: int, idx: int) -> None:
     global result
 
