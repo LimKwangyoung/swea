@@ -3,7 +3,7 @@ import collections
 
 
 def cal_cost(cost: int) -> int:
-        return sum(((cost - power) ** 2) * powers[power] for power in powers if cost > power)
+    return sum(((cost - power) ** 2) * powers[power] for power in powers if cost > power)
 
 
 def binary_search(left: int, right: int) -> int:
