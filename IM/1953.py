@@ -2,9 +2,14 @@ import sys
 
 sys.stdin = open('input.txt')
 ##################################################
-import collections
+IN = {
+    0: (1, 2, 5, 6),
+    1: (1, 3, 6, 7),
+    2: (1, 2, 4, 7),
+    3: (1, 3, 4, 5),
+}
 
-tunnel = {
+OUT = {
     1: (0, 1, 2, 3),
     2: (0, 2),
     3: (1, 3),
@@ -23,28 +28,21 @@ for t in range(1, T + 1):
     board = [list(map(int, input().split())) for _ in range(N)]
 
     result = 1
-    que = collections.deque([(R, C, 1)])  # (row, col, status, time)
-    visited = [[False] * M for _ in range(N)]
-    visited[R][C] = True
-    while que:
-        r, c, time = que.popleft()
+    que = [(R, C, board[R][C])]  # (row, col, status)
+    board[R][C] = 0
+    while que and L > 1:
+        new_que = []
+        for row, col, status in que:
+            for i in OUT[status]:
+                r = row + delta[i][0]
+                c = col + delta[i][1]
 
-        if time == L:
-            continue
-
-        for s, i in enumerate(tunnel[board[r][c]]):
-            row = r + delta[i][0]
-            col = c + delta[i][1]
-
-            if 0 <= row < N and 0 <= col < M and board[row][col] and not visited[row][col]:
-                if board[r][c] == 1 or board[r][c] in tunnel[board[row][col]]:
-                    visited[row][col] = True
-                    que.append((row, col, time + 1))
-                    result += 1
-
-        # for ii in range(N):
-        #     for jj in range(M):
-        #         print(1 if visited[ii][jj] else 0, end=' ')
-        #     print()
-        # print()
+                if 0 <= r < N and 0 <= c < M and board[r][c]:
+                    num = board[r][c]
+                    if num in IN[i]:
+                        new_que.append((r, c, num))
+                        board[r][c] = 0
+                        result += 1
+        que = new_que
+        L -= 1
     print(f'#{t} {result}')
